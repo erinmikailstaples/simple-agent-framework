@@ -1,4 +1,6 @@
-# Agent Framework
+# Simple Agent Framework
+
+## What is this framework?
 
 A flexible framework for building AI agents with tool-based capabilities.
 
@@ -191,9 +193,29 @@ Optional variables:
 - `ENABLE_LOGGING`: Enable/disable logging
 - `ENVIRONMENT`: Environment name (development/production)
 
-## Example
+## Examples
 
 See the `examples/agents/umbrella_agent` for a complete example of an agent that determines if you need an umbrella based on weather data, including Galileo logging integration.
+
+## API Integration for Agents
+
+The framework includes several example agents that demonstrate API integrations:
+
+1. **Umbrella Agent**:
+   - Weather APIs (like OpenWeatherMap) to fetch current weather data
+
+2. **Weather Vibes Agent**:
+   - Weather APIs for current conditions
+   - YouTube API for finding music that matches weather vibe
+
+3. **Travel Agent**:
+   - Weather APIs for destination forecasts
+   - Restaurant recommendation APIs (like Yelp or Google Places)
+   - Event finder APIs (like Ticketmaster or Eventbrite)
+
+## Documentation
+
+For detailed documentation on the agent framework and Galileo integration, visit [Galileo Documentation](https://docs.galileo.ai/).
 
 ## Key Components
 
