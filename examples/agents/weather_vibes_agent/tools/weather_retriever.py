@@ -23,9 +23,28 @@ class WeatherRetrieverTool(BaseTool):
     async def execute(self, location: str) -> Dict[str, Any]:
         """Get weather data for location"""
         load_dotenv()
-        api_key = os.getenv("WEATHER_API_KEY")
+        api_key = os.getenv("WEATHER_API_KEY") or os.getenv("WEATHERAPI_KEY")
         if not api_key:
-            raise ValueError("WEATHER_API_KEY environment variable is required")
+            # Determine which API key is missing
+            weather_api_key = os.getenv("WEATHER_API_KEY")
+            weatherapi_key = os.getenv("WEATHERAPI_KEY")
+            missing_keys = []
+            if not weather_api_key:
+                missing_keys.append("WEATHER_API_KEY")
+            if not weatherapi_key:
+                missing_keys.append("WEATHERAPI_KEY")
+            
+            missing_keys_str = " and ".join(missing_keys)
+            self.logger.warning("Missing API key(s): %s. Using mock weather data for location: %s", missing_keys_str, location)
+            
+            return {
+                "location": location,
+                "temperature": 22.5,  # Pleasant temperature in Celsius
+                "weather_condition": "[MOCK DATA] Partly cloudy",
+                "precipitation_chance": 20.0,  # 20% chance of precipitation
+                "mock_data": True,
+                "missing_api_keys": missing_keys_str
+            }
 
         # API endpoint
         url = "http://api.weatherapi.com/v1/current.json"
@@ -48,5 +67,6 @@ class WeatherRetrieverTool(BaseTool):
                     "location": data["location"]["name"],
                     "temperature": data["current"]["temp_c"],
                     "weather_condition": data["current"]["condition"]["text"],
-                    "precipitation_chance": data["current"].get("precip_mm", 0) * 100  # Convert to percentage
+                    "precipitation_chance": data["current"].get("precip_mm", 0) * 100,  # Convert to percentage
+                    "mock_data": False
                 } 

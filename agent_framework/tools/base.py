@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, Dict, ClassVar, Type
+from typing import Any, Dict, ClassVar, Type, Union
 from ..models import ToolMetadata, ToolError
 
 class BaseTool(ABC):
@@ -15,6 +15,6 @@ class BaseTool(ABC):
         return cls.metadata()  # This will use the default values defined in the metadata class
     
     @abstractmethod
-    async def execute(self, **inputs: Any) -> Dict[str, Any] | ToolError:
+    async def execute(self, **inputs: Any) -> Union[Dict[str, Any], ToolError]:
         """Execute the tool with given inputs"""
         pass 

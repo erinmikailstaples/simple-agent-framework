@@ -59,7 +59,63 @@ class YoutubeWeatherVibesTool(BaseTool):
         # Check API key
         api_key = os.getenv('YOUTUBE_API_KEY')
         if not api_key:
-            raise ValueError("YOUTUBE_API_KEY environment variable is not set")
+            self.logger.warning("YOUTUBE_API_KEY environment variable is not set - using mock data")
+            print("WARNING: YOUTUBE_API_KEY is missing. Using mock YouTube video data.")
+            # Generate mock video data
+            search_query = self._generate_search_query(weather_condition, temperature)
+            
+            # Create mock videos with appropriate themes based on the weather
+            mock_videos = [
+                {
+                    "title": f"[MOCK DATA] Relaxing {weather_condition} Day Music Mix | {temperature}°C Vibes",
+                    "channel_title": "Weather Vibes Music",
+                    "description": f"[MOCK DATA - YOUTUBE_API_KEY missing] The perfect playlist for a {weather_condition} day with temperatures around {temperature}°C. Enjoy these carefully selected tracks to match your weather mood.",
+                    "thumbnail_url": "https://i.ytimg.com/vi/mock_id_1/hqdefault.jpg",
+                    "video_id": "mock_id_1",
+                    "video_url": "https://www.youtube.com/watch?v=mock_id_1"
+                },
+                {
+                    "title": f"[MOCK DATA] Study/Work Music for {weather_condition} Weather | Ambient Focus Playlist",
+                    "channel_title": "Focus Flow",
+                    "description": f"[MOCK DATA - YOUTUBE_API_KEY missing] Boost your productivity during {weather_condition} weather with this ambient music mix designed for focus and concentration.",
+                    "thumbnail_url": "https://i.ytimg.com/vi/mock_id_2/hqdefault.jpg",
+                    "video_id": "mock_id_2",
+                    "video_url": "https://www.youtube.com/watch?v=mock_id_2"
+                },
+                {
+                    "title": f"[MOCK DATA] {temperature}°C Weather Beats | Lofi Hip Hop Mix",
+                    "channel_title": "Chill Beats Studio",
+                    "description": "[MOCK DATA - YOUTUBE_API_KEY missing] Lofi hip hop beats perfect for relaxing, studying, or working while enjoying the current weather conditions.",
+                    "thumbnail_url": "https://i.ytimg.com/vi/mock_id_3/hqdefault.jpg",
+                    "video_id": "mock_id_3",
+                    "video_url": "https://www.youtube.com/watch?v=mock_id_3"
+                },
+                {
+                    "title": f"[MOCK DATA] Epic {weather_condition} Soundtrack | Cinematic Music Collection",
+                    "channel_title": "Epic Music World",
+                    "description": f"[MOCK DATA - YOUTUBE_API_KEY missing] Experience the majesty of {weather_condition} weather with this epic cinematic soundtrack collection.",
+                    "thumbnail_url": "https://i.ytimg.com/vi/mock_id_4/hqdefault.jpg",
+                    "video_id": "mock_id_4",
+                    "video_url": "https://www.youtube.com/watch?v=mock_id_4"
+                },
+                {
+                    "title": f"[MOCK DATA] Acoustic Covers for {weather_condition} Days | Relaxing Playlist",
+                    "channel_title": "Acoustic Treasures",
+                    "description": "[MOCK DATA - YOUTUBE_API_KEY missing] Beautiful acoustic covers of popular songs that perfectly match the mood of today's weather.",
+                    "thumbnail_url": "https://i.ytimg.com/vi/mock_id_5/hqdefault.jpg",
+                    "video_id": "mock_id_5",
+                    "video_url": "https://www.youtube.com/watch?v=mock_id_5"
+                }
+            ]
+            
+            return {
+                "weather_condition": weather_condition,
+                "temperature": temperature,
+                "search_query": search_query,
+                "videos": mock_videos,
+                "mock_data": True,
+                "missing_api_key": "YOUTUBE_API_KEY"
+            }
 
         # Determine search query based on weather condition and temperature
         search_query = self._generate_search_query(weather_condition, temperature)
@@ -101,7 +157,8 @@ class YoutubeWeatherVibesTool(BaseTool):
                     "weather_condition": weather_condition,
                     "temperature": temperature,
                     "search_query": search_query,
-                    "videos": videos
+                    "videos": videos,
+                    "mock_data": False
                 }
     
     def _generate_search_query(self, weather_condition: str, temperature: float) -> str:
