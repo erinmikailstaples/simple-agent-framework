@@ -4,7 +4,7 @@ import styles from '../styles/Home.module.css';
 
 export default function Home() {
   const [location, setLocation] = useState('');
-  const [weatherData, setWeatherData] = useState(null);
+  const [agentResponse, setAgentResponse] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -18,7 +18,7 @@ export default function Home() {
 
     setLoading(true);
     setError('');
-    setWeatherData(null);
+    setAgentResponse('');
 
     try {
       // This is where we would make an API call to the backend
@@ -33,13 +33,13 @@ export default function Home() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch weather data');
+        throw new Error('Failed to get response from agent');
       }
 
       const data = await response.json();
-      setWeatherData(data);
+      setAgentResponse(data.response || 'No response received from agent');
     } catch (err) {
-      setError('Failed to get weather vibes. Please try again.');
+      setError('Failed to get a response from the agent. Please try again.');
       console.error(err);
     } finally {
       setLoading(false);
@@ -88,25 +88,13 @@ export default function Home() {
 
           {loading && <p className={styles.loading}>Loading your weather vibes...</p>}
 
-          {weatherData && (
+          {agentResponse && (
             <div className={styles.results}>
-              <h2>Weather Vibes for {weatherData.location}</h2>
-              <div className={styles.weatherInfo}>
-                <p>Current Temperature: {weatherData.temperature}°C</p>
-                <p>Conditions: {weatherData.conditions}</p>
-                <p>Umbrella Needed: {weatherData.needUmbrella ? 'Yes' : 'No'}</p>
-              </div>
-              <div className={styles.vibes}>
-                <h3>Your Music Recommendations:</h3>
-                <ul className={styles.videoList}>
-                  {weatherData.videos.map((video, index) => (
-                    <li key={index} className={styles.videoItem}>
-                      <a href={video.url} target="_blank" rel="noopener noreferrer">
-                        {video.title}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+              <h2>Weather Information</h2>
+              <div className={styles.responseText}>
+                {agentResponse.split('\n').map((line, index) => (
+                  <p key={index}>{line}</p>
+                ))}
               </div>
             </div>
           )}
