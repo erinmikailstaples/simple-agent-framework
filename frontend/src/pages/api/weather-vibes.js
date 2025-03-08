@@ -15,8 +15,11 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Location is required' });
     }
 
+    // Determine the API URL - use environment variable if available, otherwise use relative path
+    const apiUrl = process.env.BACKEND_API_URL || '/api/weather';
+    
     // Connect to the backend agent
-    const response = await fetch('http://localhost:1234/weather', {
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -24,6 +27,8 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         location: location
       }),
+      // Set a reasonable timeout to prevent hanging requests
+      timeout: 10000,
     });
 
     // Handle non-OK responses
