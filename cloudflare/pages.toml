@@ -1,0 +1,17 @@
+# Build configuration
+[build]
+command = "cd frontend && npm install && npm run build"
+publish = "frontend/.next"
+
+# Environment variables
+[env]
+NEXT_PUBLIC_API_URL = "https://simple-agent-framework-api.workers.dev"
+
+# Production environment
+[env.production]
+NEXT_PUBLIC_API_URL = "https://simple-agent-framework-api-prod.workers.dev"
+
+# Development environment
+[env.development]
+NEXT_PUBLIC_API_URL = "https://simple-agent-framework-api-dev.workers.dev"
+

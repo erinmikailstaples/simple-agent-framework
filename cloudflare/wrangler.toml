@@ -1,0 +1,16 @@
+name = "simple-agent-framework"
+compatibility_date = "2024-03-17"
+
+[site]
+bucket = "./frontend"
+
+[build]
+command = "npm run build"
+cwd = "frontend"
+
+[env.production]
+name = "simple-agent-framework-prod"
+
+[env.development]
+name = "simple-agent-framework-dev"
+
